@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Checkout</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Coffee</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.subtotal|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th colspan="2">Total:</th>
+                <th>${{ total_price|floatformat:2 }}</th>
+            </tr>
+        </tbody>
+    </table>
+    <form method="post" action="{% url 'confirm_order' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Confirm Order</button>
+    </form>
+</div>
+{% endblock %}

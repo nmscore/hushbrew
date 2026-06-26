@@ -1,0 +1,8 @@
+<form method="post"> enctype="multipart/form-data">
+  {% csrf_token %}
+  <p>Category field directly:</p>
+  {{ form.category }}
+  <br><br>
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>

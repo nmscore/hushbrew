@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-2">
+ 
+  <h2>Coffees</h2>
+  <ul>
+    <p>Cappuccino</p>
+    <p>Latte</p>
+    <p>Black Coffee</p>
+    <p>Americano</p>
+    <p>Mocha</p>
+    <p>Espresso</p>
+    <p>Turkish Coffee</p>
+    <p>Macchiato</p>
+    <p>Irish Coffee</p>
+    <p>Cold Brew</p>
+    <p>Frappuccino</p>
+    <p>Affogato</p>
+  </ul>
+</div>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Our Menu</h2>
+  <div class="row">
+    {% for item in coffee %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="{{ item.image }}" class="card-img-top" alt="{{ item.name }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="card-text">₹{{ item.price }}</p>
+            <p class="card-text"><small class="text-muted">{{ item.category }} - {{ item.temperature }}</small></p>
+
+            <p class="card-text">{{ item.description }}</p>  {# ✅ Use description from DB #}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

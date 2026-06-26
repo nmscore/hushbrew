@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .order-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f8f8;
+        padding: 20px;
+        margin: 15px auto;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        max-width: 800px;
+    }
+
+    .order-details {
+        flex-grow: 1;
+        font-size: 16px;
+    }
+
+    .order-meta {
+        text-align: right;
+        white-space: nowrap;
+        color: #444;
+        font-weight: 500;
+        font-size: 15px;
+    }
+
+    .order-details p {
+        margin: 5px 0;
+    }
+
+    .order-items {
+        margin-top: 8px;
+        padding-left: 15px;
+        list-style-type: disc;
+    }
+
+    .order-items li {
+        margin-bottom: 3px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
+<h2>🧾 Order History</h2>
+
+{% for order in orders %}
+    <div class="order-block">
+        <div class="order-details">
+            <div class="order-header">
+                <p><strong>Order #{{ order.id }}</strong></p>
+                <p class="order-meta">{{ order.date|date:"M d, Y · h:i A" }}</p>
+            </div>
+            <p><strong>Items Ordered:</strong></p>
+            <ul class="order-items">
+                {% with 0 as total_price %}
+                {% for item in order.items.all %}
+                    <p>
+                        {{ item.product.name }} (x{{ item.quantity }}) – ${{ item.product.price|floatformat:2 }}
+                    </p>
+                {% endfor %}
+                {% endwith %}
+            </ul>
+        </div>
+        
+
+       <div class="order-meta">
+          <p style="margin-bottom: 100px;">{{ order.created_at|date:"F j, Y, g:i a"}}</p>
+          <p><strong>Total:</strong> ${{ order.total_price|floatformat:2 }}</p>
+       </div>
+
+    </div>
+{% empty %}
+    <p style="text-align: center;">No orders found.</p>
+{% endfor %}
+
+{% endblock %}

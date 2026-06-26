@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .navbar {
+    background: transparent !important;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  .navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px #000;
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar .nav-link:hover,
+  .navbar .nav-link:hover i,
+  .navbar .nav-link:hover span {
+    color: #ffc107 !important;
+  }
+
+  .navbar .navbar-brand {
+    color: #ffffff !important;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px #000;
+  }
+
+  .navbar .navbar-brand:hover {
+    color: #ffc107 !important;
+  }
+
+  .background-wrapper {
+    position: relative;
+    background-image: url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+  }
+
+  .fullscreen-bg {
+    min-height: 90vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cover-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+    animation: fadeIn 1.2s ease-in-out;
+    padding: 0 20px;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cover-container h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .cover-container p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+
+  .cover-container a.btn {
+    font-size: 1.2rem;
+    padding: 12px 32px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 30px;
+    transition: 0.3s ease-in-out;
+    font-weight: 600;
+  }
+
+  .cover-container a.btn:hover {
+    background-color: #343a40;
+    color: #fff;
+  }
+
+  /* ✅ Scroll indicator: visible, bouncy, higher position */
+  .scroll-indicator-wrapper {
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    z-index: 2;
+    margin-top: -40px; /* pull it up slightly */
+  }
+
+  .scroll-indicator a {
+    font-size: 2.2rem;
+    color: #fff;
+    opacity: 0.95;
+    display: inline-block;
+    animation: bounce 1.5s infinite;
+  }
+
+  .scroll-indicator a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  #menu {
+    scroll-margin-top: 80px;
+    padding: 60px 20px 80px 20px;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .menu-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .menu-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+
+  .product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .product-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .product-card h5 {
+    font-size: 1.2rem;
+    color: #fff;
+  }
+
+  .product-card p {
+    color: #ffc107;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+
+<!-- ✅ Background wrapper wrapping both cover + menu -->
+<div class="background-wrapper">
+  <div class="overlay"></div>
+
+  <!-- ✅ Cover Section -->
+  <div class="fullscreen-bg" id="top">
+    <div class="cover-container">
+      <h1>Welcome to HUSH BREW</h1>
+      <p>Your cozy corner for hot & cold coffee cravings</p>
+      {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}" class="btn btn-light">Login</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ✅ Scroll Indicator between cover + menu -->
+  <div class="scroll-indicator-wrapper">
+    <div class="scroll-indicator">
+      <a href="#menu">↓</a>
+    </div>
+  </div>
+
+<!-- ✅ Explore Menu Section -->
+<div id="menu">
+  <div class="menu-container">
+    <h2>☕ Explore Our Menu</h2>
+    <div class="product-grid">
+      {% for item in coffee %}
+        <div class="product-card">
+          <h5>{{ item.name }}</h5>
+          <p>${{ item.price|floatformat:2 }}</p>
+        </div>
+      {% empty %}
+        <p style="color: #fff; font-size: 1.2rem;">No coffee items available at the moment.</p>
+      {% endfor %}
+    </div>
+
+    <!-- ✅ Go to Menu Button -->
+    <div style="margin-top: 50px; display: flex; justify-content: flex-end;">
+       <a href="{% url 'home' %}" class="btn btn-light" style="padding: 12px 32px; border-radius: 30px; font-weight: 600; font-size: 1.1rem;">Go to Menu</a>
+    </div>
+
+
+    <!-- ✅ Scroll Back Up Indicator -->
+    <div class="scroll-indicator-wrapper" style="margin-top: 0px;">
+      <div class="scroll-indicator">
+        <a href="#top">↑</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
