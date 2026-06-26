@@ -157,7 +157,7 @@ http://127.0.0.1:8000/
 
 ## 👩‍💻 Author
 
-Lena Margret Shojo
+Nayan Maria Shojo
 
 GitHub:
-https://github.com/lenamargretshojo
+https://github.com/nmscore
